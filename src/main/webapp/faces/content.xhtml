@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+</h:head>
+    <body>
+        <ui:composition>
+        <table>
+            <tr>
+                <td id="menu">
+                    <h3>Dark<br/>mode</h3>
+                    <label class="switch">
+                        <input type="checkbox" id="switcher"></input>
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+
+                <td id="graph-style">
+                    <canvas id="graph" width="600%" alt="Graph" height="600%" style="border: 3px solid var(--border-color);"/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <h:form id="form" onsubmit="return validateForm(this)">
+                        <table class="select-table">
+                            <tr>
+                                <td>
+                                    <label for="input_y">Y from -5 to 5</label>
+                                </td>
+                                <td>
+                                    <p:inputNumber value="#{attempt.y}" id="input_y" name="input_y" required="true" decimalSeparator=".">
+                                    </p:inputNumber>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="input_x">Choose X</label>
+                                    <p:inputText type="hidden" value="#{attempt.x}" name='input_x' id='input_x'/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="-2" onchange="changeValueForX(this.id)" />
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="-1.5" onchange="changeValueForX(this.id)" />
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="-1" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="-0.5" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="0"  onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="0.5" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="1" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="1.5" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="2" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="2.5" onchange="changeValueForX(this.id)"/>
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox name="x" itemLabel="3" onchange="changeValueForX(this.id)"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label for="input_r">Choose R</label>
+                                    <p:inputText type="hidden" value="#{attempt.r}" name='input_r' id='input_r'/>
+                                </td>
+                                <td>
+                                <p:commandLink onclick="changeValueForR(1)">Change to 1</p:commandLink>
+                                </td>
+                                <td>
+                                <p:commandLink onclick="changeValueForR(1.5)">Change to 1.5</p:commandLink>
+                                </td>
+                                <td>
+                                <p:commandLink onclick="changeValueForR(2)">Change to 2</p:commandLink>
+                                </td>
+                                <td>
+                                <p:commandLink onclick="changeValueForR(2.5)">Change to 2.5</p:commandLink>
+                                </td>
+                                <td>
+                                <p:commandLink onclick="changeValueForR(3)">Change to 3</p:commandLink>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <h:commandButton class = "button" value="Clear" action="#{dbManager.clear()}"/>
+                                </td>
+                                <td>
+                                    <h:commandButton class = "button" id="submit" value="Check in DB" action="#{dbManager.checkHit(attempt)}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p id="warning">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:1%;text-align:center;">
+                    <h2>Results</h2>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding:1%">
+                    <h:dataTable value="#{dbManager.attempts}" var="a" id="results">
+                        <tr>
+                            <td>Attempt</td>
+                            <td>X</td>
+                            <td>Y</td>
+                            <td>R</td>
+                            <td>Result</td>
+                            <th>Attempt time</th>
+                            <th>Processing time</th>
+                        </tr>
+                        <h:column>
+                            <f:facet name="header">attempt</f:facet>
+                            <h:outputText value="#{a.attempt}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">X</f:facet>
+                            <h:outputText value="#{a.x}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Y</f:facet>
+                            <h:outputText value="#{a.y}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">R</f:facet>
+                            <h:outputText value="#{a.r}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Result</f:facet>
+                            <h:outputText value="#{a.hit}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Start time</f:facet>
+                            <h:outputText value="#{a.getUserFriendlyStartTime()}"/>
+                        </h:column>
+                    </h:dataTable>
+                </td>
+            </tr>
+        </table>
+        <script src="./resources/js/main.js"></script>
+        </ui:composition>
+    </body>
+</html>
